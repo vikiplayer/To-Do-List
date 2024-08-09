@@ -3,9 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Document</title>
 </head>
 <body>
+    <header class="header">
+        <div class="logo-sec">
+            <div class="icon">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div class="name">
+                <h1>DoItNow</h1>
+            </div>
+        </div>
+        <div class="search">
+            <div class="search-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="input">
+                <input placeholder="search task" type="text">
+            </div>
+        </div>
+        <div class="settings">
+            <div class="settings-icon">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+            <div class="profile-icon">
+                <i class="fa-solid fa-user"></i>
+            </div>
+        </div>
+    </header>
+    <section class="main">
+        <nav class="nav">
+            <ul>
+                <li>
+                    <i class="fa-regular fa-sun"></i>
+                    my day
+                </li>
+                <li>
+                    <i class="fa-regular fa-star"></i>
+                    important
+                </li>
+                <li>
+                    <span class="material-symbols-outlined">
+                        schedule
+                    </span>
+                    planned
+                </li>
+                <li>
+                    <i class="fa-solid fa-house"></i>
+                    tasks
+                </li>
+            </ul>
+        </nav>
+        <div class="tasks">
+            <nav class="task-nav">
+                <div class="task-nav-left">
+                    <div class="btn">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="heading">
+                        tasks
+                    </div>
+                    <div class="dots">
+                        <i class="fa-solid fa-circle"></i>
+                        <i class="fa-solid fa-circle"></i>
+                        <i class="fa-solid fa-circle"></i>
+                    </div>
+                    <div class="grid">
+                        <span class="material-symbols-outlined">
+                            grid_view
+                        </span>
+                    </div>
+                    <div class="list">
+                        <i class="fa-solid fa-list"></i>
+                    </div>
+                </div>
+                <div class="task-nav-right">
+                    <div class="sort">
+                        <span class="material-symbols-outlined">
+                            sort
+                        </span>
+                    </div>
+                    <div class="group">
+                        <span class="material-symbols-outlined">
+                            tab_group
+                        </span>
+                    </div>
+                </div>
+            </nav>
+            <section class="tasks-sec">
+                <div class="task_input">
+                    <div class="add-icon">
+                        <label for="add" id="add_btn">
+                            <i class="fa-solid fa-plus"></i>
+                        </label>
+                        <label for="add" id="radio_btn">
+                            <i class="fa-regular fa-circle"></i>
+                        </label>
     
+                    </div>
+                    <div class="text-box">
+                        <input placeholder="Enter task" type="text" id="add">
+                    </div>
+                </div>
+                <div class="label">
+                    <div class="fun_icon">
+                        <div class="icon_fun">
+                            <div class="calendar-icon">
+                                <i class="fa-regular fa-calendar-days"></i>
+                            </div>
+                            <!-- <div class="calendar">
+                                <iframe src="https://calendar.google.com/calendar/embed?height=200&wkst=1&ctz=UTC&bgcolor=%23616161&showTitle=0&showPrint=0&showTabs=0&showTz=0&showCalendars=0" style="border-width:0" width="300" height="200" frameborder="0" scrolling="no"></iframe>
+                            </div> -->
+                        </div>
+                        <div class="icon_fun">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div class="icon_fun">
+                            <i class="fa-solid fa-repeat"></i>
+                        </div>
+                    </div>
+                    <div class="task_btn">
+                        <button class="button" id="push">Add</button>
+                    </div>
+                </div>
+                <div id="task-sec" class="task-sec">    
+                </div>
+            </section>
+        </div>
+        <div class="edit">
+        </div>
+    </section>
+    <script src="main.js"></script>
 </body>
 </html>

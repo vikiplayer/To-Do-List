@@ -1,0 +1,301 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-transform: capitalize;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: darkslategray;
+    color: aliceblue;
+    padding: 10px 5px;
+    position: sticky;
+}
+
+.logo-sec {
+    display: flex;
+    align-items: center;
+}
+
+.icon{
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.name{
+    font-size: 10px;
+    margin-left: 5px;
+}
+
+.search{
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.search-icon{
+    margin-left: 5px;
+    color: darkslategray;
+}
+
+.input{
+    margin-left: 5px;
+}
+
+.input input{
+    width: 300px;
+    border: none;
+}
+
+.settings{
+    display: flex;
+    align-items: center;
+}
+
+.settings-icon{
+    margin-right: 5px;
+}
+
+.profile-icon{
+    margin-right: 5px;
+}
+
+.main{
+    display: flex;
+}
+
+.nav{
+    display: none;
+    width: 20%;
+    height: 92vh;
+}
+
+.tasks{
+    width: 100%;
+    
+}
+.task-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-nav-left{
+    display: flex;
+    align-items: center;
+}
+
+.btn{
+    padding: 5px;
+    font-size: x-large;
+}
+
+.heading{
+    padding: 5px;
+    font-size: x-large;
+}
+
+.dots{
+    font-size: 5px;
+    padding: 5px;
+}
+
+.grid{
+    padding: 5px;
+    font-size: x-large;
+}
+
+.list{
+    padding: 5px;
+    font-size: x-large;
+}
+
+.task-nav-right{
+    display: flex;
+    align-items: center;
+    
+}
+
+.sort{
+    padding: 5px;
+
+    font-size: x-large;
+}
+
+.group{
+    padding: 5px;
+    font-size: x-large;
+}
+
+.tasks-sec{
+    display: flex;
+    flex-direction: column;
+}
+
+.fun_icon{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin: 1%;
+    font-size: large;
+}
+
+.task_input{
+    display: flex;
+    align-items: center;
+    width: 95%;
+    height: 50px;
+    margin: 1% auto 0 auto;
+    border: 2px darkslategray solid;
+}
+
+.label{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    height: 50px;
+    margin: 0 auto 1% auto;
+    border: 2px darkslategray solid;
+    border-top: none;
+    font-size: large;
+}
+
+.icon_fun{
+    margin: 0 20px;
+}
+
+.icon_fun:first-child{
+
+    display: flex;
+    align-items: center;
+}
+
+.calendar-icon{
+    margin: 2%;
+}
+
+.calendar{
+    margin: 2%;
+    z-index: 2;
+}
+
+.add-icon{
+    margin: 5%
+}
+
+#radio_btn{
+    display: block;
+}
+
+#add_btn{
+    display: none;
+}
+
+.text-box{
+    width: 100%;
+}
+
+.task_btn{
+    margin-right: 10px;
+}
+
+.button{
+    padding: 10px;
+    background: darkslategray;
+    color: #fff;
+    outline: none;
+    /* border: none; */
+    display: none;
+}
+
+.button.active{
+    display: block;
+}
+
+.text-box input{
+    padding: 10px 8px 10px 0;
+    /* height: 45px; */
+    width: 90%;
+    border: none;
+    outline: none;
+    font-size: large;
+}
+
+.task-sec{
+    background: darkslategray;
+    align-items: center;
+    width: 95%;
+    height: fit-content;
+    margin: 1% auto 0 auto;
+    border: 2px darkslategray solid;
+}
+
+.taskss{
+    display: flex;
+    align-items: center;
+    width: 95%;
+    height: 50px;
+    margin: 1% auto 1% auto;
+    border: 2px darkslategray solid;
+    background: #fff;
+}
+
+.check-box{
+    margin: 5%;
+}
+
+.task-name{
+    width: 80%;
+}
+
+.important{
+    margin: 1%;
+}
+
+.delete{
+    margin: 1%;
+    
+}
+
+.check-box button{
+    background: none;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+}
+.important button{
+    background: darkslategray;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+}
+.delete button{
+    background: darkslategray;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+}
+
+.edit{
+    display: none;
+    width: 20%;
+    height: 94vh;
+    background-color: black;
+}
+
+iframe{
+    border:solid 1px #777;
+    width: 300px;
+    height: 200px;
+}
