@@ -10,6 +10,7 @@ let radioBtn = document.getElementById("radio_btn");
 let btn = document.getElementById("push");
 let box = document.getElementById("task-sec")
 let count = 0;
+let selectedDate = "";
 
 // when input was active then icon as changes
 newTask.addEventListener("focus", function() {
@@ -56,7 +57,8 @@ function displayTasks() {
                     </button>
                 </div>
                 <div class="task-name" style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
-                    ${task.name}
+                    ${task.name} <br>
+                    <h6>${task.date}</h6>
                 </div>
                 <div class="important">
                     <button class="important-btn">
@@ -88,10 +90,141 @@ function saveTasksToLocalStorage() {
         let taskName = taskElement.querySelector(".task-name").textContent.trim();
         let checked = taskElement.querySelector(".checked").style.display === "block";
         let important = taskElement.querySelector(".iimportant").style.display === "block";
-        tasks.push({ name: taskName, checked: checked, important: important });
+        let todayTask = taskElement.querySelector(".date").textContent.trim();
+        tasks.push({ name: taskName, checked: checked, important: important, date: todayTask });
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
+// calander
+
+// Get the calendar icon and the calendar section
+const calendarIcon = document.querySelector('.calendar-icon i');
+const calendarSection = document.querySelector('.section');
+const dateElements = document.querySelectorAll('.date li'); // Assuming dates are in <li> elements
+
+// Event listener to toggle the calendar when the icon is clicked
+calendarIcon.addEventListener('click', function() {
+    if (calendarSection.style.display === 'none' || calendarSection.style.display === '') {
+        calendarSection.style.display = 'block';
+    } else {
+        calendarSection.style.display = 'none';
+    }
+});
+
+// Event listener for date selection
+dateElements.forEach(date => {
+    date.addEventListener('click', function() {
+        // Assuming you handle date selection here
+        calendarSection.style.display = 'none'; // Hide the calendar after selecting a date
+    });
+});
+
+btn.addEventListener('click', function() {
+    calendarSection.style.display = 'none'; // Hide the calendar when Enter is clicked
+});
+
+btn.addEventListener("click", addTask);
+newTask.addEventListener("keypress", function(event) {
+    if (event.key === 'Enter') {
+        addTask();
+    }
+});
+
+// 
+
+const currentDate = document.querySelector(".thismonth");
+const dates = document.querySelector(".date");
+const pre = document.getElementById("per");
+const nxt = document.getElementById("nxt");
+let date = new Date();
+let thisYear = date.getFullYear();
+let thisMonth = date.getMonth();
+
+const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const runCal = () => {
+    let firstDayIndex = new Date(thisYear, thisMonth, 1).getDay();
+    let lastDate = new Date(thisYear, thisMonth + 1, 0).getDate();
+    let ldlm = new Date(thisYear, thisMonth, 0).getDate();
+    let liTag = "";
+
+    // Adding the days from the previous month
+    for (let i = ldlm - firstDayIndex + 1; i <= ldlm; i++) {
+        liTag += `<li class="non-active">${i}</li>`;
+    }
+
+    // Adding the days of the current month
+    for (let i = 1; i <= lastDate; i++) {  
+        // Get today's date, month, and year
+        let todayDate = date.getDate();
+        let todayMonth = new Date().getMonth();
+        let todayYear = new Date().getFullYear();
+        
+        // Format today's date as a string "dd-mm-yyyy"
+        let toDay = String(todayDate) + "-" + String(todayMonth + 1) + "-" + String(todayYear);
+        let currentDateString = String(i) + "-" + String(thisMonth + 1) + "-" + String(thisYear)        
+        if (new Date(thisYear, thisMonth, i) > new Date(todayYear, todayMonth, todayDate)) {
+            liTag += `<li>${i}</li>`;
+        } else if ((toDay) == (currentDateString)) {
+            liTag += `<li class="active">${i}</li>`;
+        } else {
+            liTag += `<li class="non-active">${i}</li>`;
+        }
+    }
+    
+      
+
+    let nextDays = 7 - ((firstDayIndex + lastDate) % 7);
+    if (nextDays < 7) {  // Only add these if we need to fill the last row
+        for (let i = 1; i <= nextDays; i++) {
+            liTag += `<li class="non-active">${i}</li>`;
+        }
+    }
+
+    
+    currentDate.textContent = `${month[thisMonth]} ${thisYear}`;
+    dates.innerHTML = liTag;
+
+    // Add event listener to each date to print the selected date
+    const dateItems = dates.querySelectorAll("li:not(.non-active)");
+    dateItems.forEach(item => {
+        item.addEventListener("click", () => {
+            let selectedDay = item.textContent;
+            selectedDate = `${selectedDay}-${thisMonth+1}-${thisYear}`;
+            return selectedDate
+        });
+        saveTasksToLocalStorage();
+    });
+}
+
+runCal();
+
+pre.addEventListener("click",() =>{
+    thisMonth--;
+
+    // Handle the case when the month goes below January
+    if (thisMonth < 0) {
+        thisMonth = 11;  // Set to December
+        thisYear--;      // Decrement the year
+    }
+    
+    runCal();
+});
+
+nxt.addEventListener("click",() =>{
+    thisMonth++;
+
+    // Handle the case when the month goes above December
+    if (thisMonth > 11) {
+        thisMonth = 0;   // Set to January
+        thisYear++;      // Increment the year
+    }
+    
+    runCal();
+});
+
+// 
 
 
 //adding task
@@ -107,7 +240,8 @@ function addTask() {
                     </button>
                 </div>
                 <div class="task-name">
-                    ${newTask.value}
+                    ${newTask.value} <br>
+                    <h6 class="date"> ${selectedDate} </h6>
                 </div>
                 <div class="important">
                     <button class="important-btn">
@@ -120,7 +254,7 @@ function addTask() {
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
-            </div>  
+            </div> 
         `;
 
         newTask.value = '';
@@ -200,80 +334,4 @@ box.addEventListener("click", function(event) {
 });
 
 
-// calander
 
-const currentDate = document.querySelector(".thismonth");
-const dates = document.querySelector(".date");
-const pre = document.getElementById("per");
-const nxt = document.getElementById("nxt");
-let date = new Date();
-let thisYear = date.getFullYear();
-let thisMonth = date.getMonth();
-
-const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-const runCal = () => {
-    let firstDayIndex = new Date(thisYear, thisMonth, 1).getDay();
-    let lastDate = new Date(thisYear, thisMonth + 1, 0).getDate();
-    let ldlm = new Date(thisYear, thisMonth, 0).getDate();
-    let liTag = "";
-
-    // Adding the days from the previous month
-    for (let i = ldlm - firstDayIndex + 1; i <= ldlm; i++) {
-        liTag += `<li class="non-active">${i}</li>`;
-    }
-
-    // Adding the days of the current month
-    for (let i = 1; i <= lastDate; i++) {  
-        // Check if the current day is today's date and if the month and year match
-        let today = i === date.getDate() && thisMonth === new Date().getMonth() && thisYear === new Date().getFullYear() ? "active" : "";
-        liTag += `<li class="${today}">${i}</li>`;      
-    }  
-      
-
-    let nextDays = 7 - ((firstDayIndex + lastDate) % 7);
-    if (nextDays < 7) {  // Only add these if we need to fill the last row
-        for (let i = 1; i <= nextDays; i++) {
-            liTag += `<li class="non-active">${i}</li>`;
-        }
-    }
-
-    
-    currentDate.textContent = `${month[thisMonth]} ${thisYear}`;
-    dates.innerHTML = liTag;
-
-    // Add event listener to each date to print the selected date
-    const dateItems = dates.querySelectorAll("li:not(.non-active)");
-    dateItems.forEach(item => {
-        item.addEventListener("click", () => {
-            let selectedDay = item.textContent;
-            console.log(`Selected Date: ${selectedDay} ${month[thisMonth]} ${thisYear}`);
-        });
-    });
-}
-
-runCal();
-
-pre.addEventListener("click",() =>{
-    thisMonth--;
-
-    // Handle the case when the month goes below January
-    if (thisMonth < 0) {
-        thisMonth = 11;  // Set to December
-        thisYear--;      // Decrement the year
-    }
-    
-    runCal();
-});
-
-nxt.addEventListener("click",() =>{
-    thisMonth++;
-
-    // Handle the case when the month goes above December
-    if (thisMonth > 11) {
-        thisMonth = 0;   // Set to January
-        thisYear++;      // Increment the year
-    }
-    
-    runCal();
-});
