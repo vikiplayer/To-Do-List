@@ -1,3 +1,9 @@
+window.onload = () => {
+    updateNote = "";
+    count = Object.keys(localStorage).length;
+    displayTasks();
+};
+// 
 let newTask = document.getElementById("add");
 let addBtn = document.getElementById("add_btn");
 let radioBtn = document.getElementById("radio_btn");
@@ -35,6 +41,59 @@ if (count == 0) {
     box.style.display = "none";
 }
 
+// 
+
+// Load tasks from local storage and display them
+function displayTasks() {
+    let tasks = JSON.parse(localStorage.getItem("tasks"));
+    tasks.forEach(task => {
+        box.innerHTML += `
+            <div class="taskss">    
+                <div class="check-box">
+                    <button class="check-box-btn">
+                        <i class="fa-solid fa-check checked" style="display: ${task.checked ? 'block' : 'none'};"></i>
+                        <i class="fa-regular fa-circle unchecked" style="display: ${task.checked ? 'none' : 'block'};"></i>
+                    </button>
+                </div>
+                <div class="task-name" style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
+                    ${task.name}
+                </div>
+                <div class="important">
+                    <button class="important-btn">
+                        <i class="fa-solid fa-star iimportant" style="display: ${task.important ? 'block' : 'none'};"></i>
+                        <i class="fa-regular fa-star not-important" style="display: ${task.important ? 'none' : 'block'};"></i>
+                    </button>
+                </div>
+                <div class="delete">
+                    <button class="delete-btn">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>  
+        `;
+    });
+
+    count = tasks.length;
+    if (count != 0) {
+        box.style.display = "block";
+    } else {
+        box.style.display = "none";
+    }
+}
+
+// Save tasks to local storage
+function saveTasksToLocalStorage() {
+    let tasks = [];
+    document.querySelectorAll(".taskss").forEach(taskElement => {
+        let taskName = taskElement.querySelector(".task-name").textContent.trim();
+        let checked = taskElement.querySelector(".checked").style.display === "block";
+        let important = taskElement.querySelector(".iimportant").style.display === "block";
+        tasks.push({ name: taskName, checked: checked, important: important });
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+
 //adding task
 
 function addTask() {
@@ -65,6 +124,7 @@ function addTask() {
         `;
 
         newTask.value = '';
+        saveTasksToLocalStorage();
     } else {
         alert("Please Enter a Task");
     }
@@ -97,6 +157,7 @@ box.addEventListener("click", function(event) {
         if (count == 0) {
             box.style.display = "none";
         }
+        saveTasksToLocalStorage();
     }
 
     // Handle important button click
@@ -113,6 +174,7 @@ box.addEventListener("click", function(event) {
             importantIcon.style.display = "none";
             notImportantIcon.style.display = "block";
         }
+        saveTasksToLocalStorage();
     }
 
     // Handle check box button click
@@ -132,6 +194,7 @@ box.addEventListener("click", function(event) {
             unchecked.style.display = "block";
             taskName.style.textDecoration = "none";
         }
+        saveTasksToLocalStorage();
         
     }
 });
