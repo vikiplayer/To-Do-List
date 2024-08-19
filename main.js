@@ -3,16 +3,22 @@ window.onload = () => {
     count = Object.keys(localStorage).length;
     displayTasks();
 };
-// 
+
+// Global Variables
 let newTask = document.getElementById("add");
 let addBtn = document.getElementById("add_btn");
 let radioBtn = document.getElementById("radio_btn");
 let btn = document.getElementById("push");
-let box = document.getElementById("task-sec")
+let box = document.getElementById("task-sec");
 let count = 0;
 let selectedDate = "";
+let selected = document.getElementById("selected");
+let bellIcon = document.querySelector(".icon_fun .fa-bell");
+let reminderTimeInput = document.getElementById("reminder-time");
+let selectedTimeDiv = document.getElementById("selectedTime");
+let selectedTime = "";
 
-// when input was active then icon as changes
+// When input is focused, change icons
 newTask.addEventListener("focus", function() {
     addBtn.style.display = "block";
     radioBtn.style.display = "none";
@@ -23,8 +29,7 @@ newTask.addEventListener("blur", function() {
     radioBtn.style.display = "block";
 });
 
-// button visible when start writing in input box
-
+// Show button when there is input
 newTask.addEventListener('input', function() {
     let input = this.value;
     let count = input.length;
@@ -36,18 +41,18 @@ newTask.addEventListener('input', function() {
     }
 });
 
-// for box visble
-
+// Hide task box if no tasks are present
 if (count == 0) {
     box.style.display = "none";
 }
 
-// 
-
 // Load tasks from local storage and display them
 function displayTasks() {
-    let tasks = JSON.parse(localStorage.getItem("tasks"));
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    box.innerHTML = ''; // Clear previous tasks
+
     tasks.forEach(task => {
+        let separator = (task.date && task.time) ? "<li>|</li>" : "";
         box.innerHTML += `
             <div class="taskss">    
                 <div class="check-box">
@@ -58,7 +63,17 @@ function displayTasks() {
                 </div>
                 <div class="task-name" style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
                     ${task.name} <br>
-                    <h6>${task.date}</h6>
+                    <ul class="taskList">
+                        <li>
+                            <p class="date">${task.date}</p>
+                        </li>
+                        <li>
+                            ${separator}
+                        </li>
+                        <li>
+                            <p class="time">${task.time}</p>
+                        </li>
+                    </ul>
                 </div>
                 <div class="important">
                     <button class="important-btn">
@@ -76,34 +91,28 @@ function displayTasks() {
     });
 
     count = tasks.length;
-    if (count != 0) {
-        box.style.display = "block";
-    } else {
-        box.style.display = "none";
-    }
+    box.style.display = count != 0 ? "block" : "none";
 }
 
 // Save tasks to local storage
 function saveTasksToLocalStorage() {
     let tasks = [];
     document.querySelectorAll(".taskss").forEach(taskElement => {
-        let taskName = taskElement.querySelector(".task-name").textContent.trim();
+        let taskName = taskElement.querySelector(".task-name").childNodes[0].textContent.trim();
         let checked = taskElement.querySelector(".checked").style.display === "block";
         let important = taskElement.querySelector(".iimportant").style.display === "block";
-        let todayTask = taskElement.querySelector(".date").textContent.trim();
-        tasks.push({ name: taskName, checked: checked, important: important, date: todayTask });
+        let taskDate = taskElement.querySelector(".date").textContent.trim();
+        let taskTime = taskElement.querySelector(".time").textContent.trim();
+        tasks.push({ name: taskName, checked: checked, important: important, date: taskDate, time: taskTime });
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-// calander
-
-// Get the calendar icon and the calendar section
+// Calendar functionality
 const calendarIcon = document.querySelector('.calendar-icon i');
 const calendarSection = document.querySelector('.section');
-const dateElements = document.querySelectorAll('.date li'); // Assuming dates are in <li> elements
+const dateElements = document.querySelectorAll('.date li');
 
-// Event listener to toggle the calendar when the icon is clicked
 calendarIcon.addEventListener('click', function() {
     if (calendarSection.style.display === 'none' || calendarSection.style.display === '') {
         calendarSection.style.display = 'block';
@@ -112,16 +121,14 @@ calendarIcon.addEventListener('click', function() {
     }
 });
 
-// Event listener for date selection
 dateElements.forEach(date => {
     date.addEventListener('click', function() {
-        // Assuming you handle date selection here
-        calendarSection.style.display = 'none'; // Hide the calendar after selecting a date
+        calendarSection.style.display = 'none';
     });
 });
 
 btn.addEventListener('click', function() {
-    calendarSection.style.display = 'none'; // Hide the calendar when Enter is clicked
+    calendarSection.style.display = 'none';
 });
 
 btn.addEventListener("click", addTask);
@@ -131,8 +138,7 @@ newTask.addEventListener("keypress", function(event) {
     }
 });
 
-// 
-
+// Calendar rendering logic
 const currentDate = document.querySelector(".thismonth");
 const dates = document.querySelector(".date");
 const pre = document.getElementById("per");
@@ -149,21 +155,17 @@ const runCal = () => {
     let ldlm = new Date(thisYear, thisMonth, 0).getDate();
     let liTag = "";
 
-    // Adding the days from the previous month
     for (let i = ldlm - firstDayIndex + 1; i <= ldlm; i++) {
         liTag += `<li class="non-active">${i}</li>`;
     }
 
-    // Adding the days of the current month
     for (let i = 1; i <= lastDate; i++) {  
-        // Get today's date, month, and year
         let todayDate = date.getDate();
         let todayMonth = new Date().getMonth();
         let todayYear = new Date().getFullYear();
         
-        // Format today's date as a string "dd-mm-yyyy"
         let toDay = String(todayDate) + "-" + String(todayMonth + 1) + "-" + String(todayYear);
-        let currentDateString = String(i) + "-" + String(thisMonth + 1) + "-" + String(thisYear)        
+        let currentDateString = String(i) + "-" + String(thisMonth + 1) + "-" + String(thisYear);        
         if (new Date(thisYear, thisMonth, i) > new Date(todayYear, todayMonth, todayDate)) {
             liTag += `<li>${i}</li>`;
         } else if ((toDay) == (currentDateString)) {
@@ -172,29 +174,25 @@ const runCal = () => {
             liTag += `<li class="non-active">${i}</li>`;
         }
     }
-    
-      
 
     let nextDays = 7 - ((firstDayIndex + lastDate) % 7);
-    if (nextDays < 7) {  // Only add these if we need to fill the last row
+    if (nextDays < 7) {
         for (let i = 1; i <= nextDays; i++) {
             liTag += `<li class="non-active">${i}</li>`;
         }
     }
 
-    
     currentDate.textContent = `${month[thisMonth]} ${thisYear}`;
     dates.innerHTML = liTag;
 
-    // Add event listener to each date to print the selected date
     const dateItems = dates.querySelectorAll("li:not(.non-active)");
     dateItems.forEach(item => {
         item.addEventListener("click", () => {
             let selectedDay = item.textContent;
             selectedDate = `${selectedDay}-${thisMonth+1}-${thisYear}`;
-            return selectedDate
+            calendarSection.style.display = 'none'; 
+            showDate();
         });
-        saveTasksToLocalStorage();
     });
 }
 
@@ -202,35 +200,61 @@ runCal();
 
 pre.addEventListener("click",() =>{
     thisMonth--;
-
-    // Handle the case when the month goes below January
     if (thisMonth < 0) {
-        thisMonth = 11;  // Set to December
-        thisYear--;      // Decrement the year
+        thisMonth = 11;
+        thisYear--;
     }
-    
     runCal();
 });
 
 nxt.addEventListener("click",() =>{
     thisMonth++;
-
-    // Handle the case when the month goes above December
     if (thisMonth > 11) {
-        thisMonth = 0;   // Set to January
-        thisYear++;      // Increment the year
+        thisMonth = 0;
+        thisYear++;
     }
-    
     runCal();
 });
 
-// 
+function showDate(){
+    selected.innerHTML = `
+        <p>${selectedDate}</p>
+    `;
+}
 
+bellIcon.addEventListener("click", function() {
+    // Toggle the visibility of the time input field
+    if (reminderTimeInput.style.display === "none" || reminderTimeInput.style.display === "") {
+        reminderTimeInput.style.display = "block"; // Show the time input field
+        reminderTimeInput.focus(); // Focus on the input field for typing the time
+    } else {
+        reminderTimeInput.style.display = "none"; // Hide the time input field if it's already visible
+    }
+});
 
-//adding task
+// Event listener for when the time is selected
+reminderTimeInput.addEventListener("change", function() {
+    selectedTime = reminderTimeInput.value.replace("T", " ");
+    console.log("Reminder time set to: " + selectedTime);
+    
+    // Display the selected time in the selectedTime div
+    selectedTimeDiv.innerHTML = `
+        <p>${selectedTime}</p>
+    `;
+    
+    // Hide the input field after selecting the time (if desired)
+    reminderTimeInput.style.display = "none";
+});
 
+// Add task to the task list
 function addTask() {
-    if (newTask.value.length > 0) {
+    if (newTask.value.length == 0) {
+        alert("Please Enter a Task");
+    } else {
+        box.style.display = "block";
+
+        let separator = (selectedDate && selectedTime) ? "<li>|</li>" : "";
+
         box.innerHTML += `
             <div class="taskss">    
                 <div class="check-box">
@@ -241,7 +265,17 @@ function addTask() {
                 </div>
                 <div class="task-name">
                     ${newTask.value} <br>
-                    <h6 class="date"> ${selectedDate} </h6>
+                    <ul class="taskList">
+                        <li>
+                            <p class="date">${selectedDate}</p>
+                        </li>
+                        <li>
+                            ${separator}
+                        </li>
+                        <li>
+                            <p class="time">${selectedTime}</p>
+                        </li>
+                    </ul>
                 </div>
                 <div class="important">
                     <button class="important-btn">
@@ -254,84 +288,66 @@ function addTask() {
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
-            </div> 
+            </div>  
         `;
-
-        newTask.value = '';
+        count++;
+        box.style.display = count != 0 ? "block" : "none";
+        newTask.value = "";
+        selectedDate = ""; // Clear selected date
+        selectedTime = ""; // Clear selected time
+        selected.innerHTML = ""; // Clear displayed date
+        selectedTimeDiv.innerHTML = ""; // Clear displayed time
+        btn.style.display = "none";
         saveTasksToLocalStorage();
-    } else {
-        alert("Please Enter a Task");
     }
-    
-    let tasks = document.querySelectorAll(".taskss");
-    count = tasks.length;
-    
-    if (count != 0) {
-        box.style.display = "block";
-    }
-    
-    return count;    
 }
 
-// Add task on button click or Enter key press
-btn.addEventListener("click", addTask);
-newTask.addEventListener("keypress", function(event) {
-    if (event.key === 'Enter') {
-        addTask();
-    }
-});
-
-// Handle task box clicks
+// Handle task checkbox toggle
 box.addEventListener("click", function(event) {
-    // Handle delete button click
-    if (event.target.closest(".delete-btn")) {
-        let task = event.target.closest(".taskss");
-        task.remove();
-        count--;
-        if (count == 0) {
-            box.style.display = "none";
+    if (event.target.closest(".check-box-btn")) {
+        let taskElement = event.target.closest(".taskss");
+        let checkedIcon = taskElement.querySelector(".checked");
+        let uncheckedIcon = taskElement.querySelector(".unchecked");
+        let taskNameElement = taskElement.querySelector(".task-name");
+        
+        if (checkedIcon.style.display === "block") {
+            checkedIcon.style.display = "none";
+            uncheckedIcon.style.display = "block";
+            taskNameElement.style.textDecoration = "none";
+        } else {
+            checkedIcon.style.display = "block";
+            uncheckedIcon.style.display = "none";
+            taskNameElement.style.textDecoration = "line-through";
         }
         saveTasksToLocalStorage();
     }
+});
 
-    // Handle important button click
+// Handle task importance toggle
+box.addEventListener("click", function(event) {
     if (event.target.closest(".important-btn")) {
-        let importantBtn = event.target.closest(".important-btn");
-        let notImportantIcon = importantBtn.querySelector(".not-important");
-        let importantIcon = importantBtn.querySelector(".iimportant");
-
-        // Toggle the display of the important and not-important icons
-        if (importantIcon.style.display === "none") {
-            importantIcon.style.display = "block";
-            notImportantIcon.style.display = "none";
-        } else {
+        let taskElement = event.target.closest(".taskss");
+        let importantIcon = taskElement.querySelector(".iimportant");
+        let notImportantIcon = taskElement.querySelector(".not-important");
+        
+        if (importantIcon.style.display === "block") {
             importantIcon.style.display = "none";
             notImportantIcon.style.display = "block";
-        }
-        saveTasksToLocalStorage();
-    }
-
-    // Handle check box button click
-    if (event.target.closest(".check-box-btn")) {
-        let checkBtn = event.target.closest(".check-box-btn");
-        let unchecked = checkBtn.querySelector(".unchecked");
-        let checked = checkBtn.querySelector(".checked");
-        let taskName = event.target.closest(".taskss").querySelector(".task-name");
-        // Toggle the display of the checked and unchecked icons
-        if (checked.style.display === "none") {
-            checked.style.display = "block";
-            unchecked.style.display = "none";
-            taskName.style.textDecoration = "line-through";
-            
         } else {
-            checked.style.display = "none";
-            unchecked.style.display = "block";
-            taskName.style.textDecoration = "none";
+            importantIcon.style.display = "block";
+            notImportantIcon.style.display = "none";
         }
         saveTasksToLocalStorage();
-        
     }
 });
 
-
-
+// Handle task deletion
+box.addEventListener("click", function(event) {
+    if (event.target.closest(".delete-btn")) {
+        let taskElement = event.target.closest(".taskss");
+        taskElement.remove();
+        count--;
+        box.style.display = count != 0 ? "block" : "none";
+        saveTasksToLocalStorage();
+    }
+});

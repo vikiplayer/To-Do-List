@@ -23,7 +23,7 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="input">
-                <input placeholder="search task" type="text">
+                <input placeholder="search task" type="search">
             </div>
         </div>
         <div class="settings">
@@ -148,9 +148,13 @@
                                 <!-- calender -->
                             </div>
                         </div>
+                        <div id="selected">
+                        </div>
                         <div class="icon_fun">
                             <i class="fa-solid fa-bell"></i>
-                        </div>
+                        </div>   
+                        <div id="selectedTime">
+                        </div>                     
                         <div class="icon_fun">
                             <i class="fa-solid fa-repeat"></i>
                         </div>
@@ -159,7 +163,9 @@
                         <button class="button" id="push">Add</button>
                     </div>
                 </div>
+                <input type="datetime-local" id="reminder-time">
                 <div id="task-sec" class="task-sec">   
+                    
                 </div>
             </section>
         </div>

@@ -52,6 +52,7 @@
 .input input{
     width: 300px;
     border: none;
+    outline: none;
 }
 
 .settings{
@@ -69,6 +70,19 @@
 
 .main{
     display: flex;
+}
+
+.taskList li{
+    display: inline-block;
+}
+
+.task-name{
+    margin-top: 5px;
+    font-size: larger;
+}
+
+.taskList li p{
+    font-size: small;
 }
 
 .nav{
@@ -226,6 +240,22 @@
     justify-content: space-between;
     align-items: center;
     padding: 5px 15px;
+}
+
+#reminder-time{
+    background-color: darkslategray;
+    color: aliceblue;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    width: 11%;
+    margin-left: 4%;
+    display: none;
+    /* position: relative; */
+}
+
+#reminder-time[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(100%);
 }
 
 .btn1{
