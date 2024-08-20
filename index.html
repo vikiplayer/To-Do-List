@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <title>Document</title>
+    <title>Dupe</title>
 </head>
 <body>
     <header class="header">
@@ -35,6 +35,41 @@
             </div>
         </div>
     </header>
+    <nav class="task-nav">
+        <div class="task-nav-left">
+            <div class="btn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="heading">
+                tasks
+            </div>
+            <div class="dots">
+                <i class="fa-solid fa-circle"></i>
+                <i class="fa-solid fa-circle"></i>
+                <i class="fa-solid fa-circle"></i>
+            </div>
+            <div class="grid">
+                <span class="material-symbols-outlined">
+                    grid_view
+                </span>
+            </div>
+            <div class="list">
+                <i class="fa-solid fa-list"></i>
+            </div>
+        </div>
+        <div class="task-nav-right">
+            <div class="sort">
+                <span class="material-symbols-outlined">
+                    sort
+                </span>
+            </div>
+            <div class="group">
+                <span class="material-symbols-outlined">
+                    tab_group
+                </span>
+            </div>
+        </div>
+    </nav>
     <section class="main">
         <nav class="nav">
             <ul>
@@ -59,41 +94,6 @@
             </ul>
         </nav>
         <div class="tasks">
-            <nav class="task-nav">
-                <div class="task-nav-left">
-                    <div class="btn">
-                        <i class="fa-solid fa-bars"></i>
-                    </div>
-                    <div class="heading">
-                        tasks
-                    </div>
-                    <div class="dots">
-                        <i class="fa-solid fa-circle"></i>
-                        <i class="fa-solid fa-circle"></i>
-                        <i class="fa-solid fa-circle"></i>
-                    </div>
-                    <div class="grid">
-                        <span class="material-symbols-outlined">
-                            grid_view
-                        </span>
-                    </div>
-                    <div class="list">
-                        <i class="fa-solid fa-list"></i>
-                    </div>
-                </div>
-                <div class="task-nav-right">
-                    <div class="sort">
-                        <span class="material-symbols-outlined">
-                            sort
-                        </span>
-                    </div>
-                    <div class="group">
-                        <span class="material-symbols-outlined">
-                            tab_group
-                        </span>
-                    </div>
-                </div>
-            </nav>
             <section class="tasks-sec">
                 <div class="task_input">
                     <div class="add-icon">
@@ -170,8 +170,22 @@
             </section>
         </div>
         <div class="edit">
+            <div>
+                <label for="input_box"><i class="fa-solid fa-list-check"></i></label>
+                <input type="text" value="task name" id="input_box">
+            </div>
+            <div>
+                <label for="input_box"><i class="fa-regular fa-calendar-days"></i></i></label>
+                <input type="text" value="task name" id="input_box">
+            </div>
+            <div>
+                <label for="input_box"><i class="fa-solid fa-bell"></i></i></label>
+                <input type="text" value="task name" id="input_box">
+            </div>
         </div>
     </section>
+    
     <script src="main.js"></script>
+    <!-- <script src="check.js"></script> -->
 </body>
 </html>

@@ -25,6 +25,7 @@
 .icon{
     font-size: 20px;
     margin-left: 5px;
+    cursor: pointer;
 }
 
 .name{
@@ -62,10 +63,12 @@
 
 .settings-icon{
     margin-right: 5px;
+    cursor: pointer;
 }
 
 .profile-icon{
     margin-right: 5px;
+    cursor: pointer;
 }
 
 .main{
@@ -76,19 +79,26 @@
     display: inline-block;
 }
 
-.task-name{
-    margin-top: 5px;
-    font-size: larger;
-}
-
 .taskList li p{
     font-size: small;
 }
 
 .nav{
     display: none;
-    width: 20%;
+    width: 14%;
     height: 92vh;
+    padding: 0px 0px 0px 18px;
+    border-right: 1px solid black;
+}
+.nav.active{
+    display: block;
+}
+
+.nav ul li{
+    list-style-type: none;
+    display: flex;
+    margin: 25px 0px;
+    align-items: center;
 }
 
 .tasks{
@@ -109,6 +119,7 @@
 .btn{
     padding: 5px;
     font-size: x-large;
+    cursor: pointer;
 }
 
 .heading{
@@ -119,16 +130,19 @@
 .dots{
     font-size: 5px;
     padding: 5px;
+    cursor: pointer;
 }
 
 .grid{
     padding: 5px;
     font-size: x-large;
+    cursor: pointer;
 }
 
 .list{
     padding: 5px;
     font-size: x-large;
+    cursor: pointer;
 }
 
 .task-nav-right{
@@ -139,13 +153,14 @@
 
 .sort{
     padding: 5px;
-
     font-size: x-large;
+    cursor: pointer;
 }
 
 .group{
     padding: 5px;
     font-size: x-large;
+    cursor: pointer;
 }
 
 .tasks-sec{
@@ -185,6 +200,8 @@
 
 .icon_fun{
     margin: 0 20px;
+    cursor: pointer;
+    
 }
 
 .icon_fun:first-child{
@@ -195,6 +212,7 @@
 
 .calendar-icon{
     margin: 2%;
+    cursor: pointer;
 }
 
 .calendar{
@@ -208,10 +226,12 @@
 
 #radio_btn{
     display: block;
+    cursor: pointer;
 }
 
 #add_btn{
     display: none;
+    cursor: pointer;
 }
 
 .text-box{
@@ -220,6 +240,7 @@
 
 .task_btn{
     margin-right: 10px;
+    cursor: pointer;
 }
 
 /* calender */
@@ -313,6 +334,7 @@
     outline: none;
     /* border: none; */
     display: none;
+    cursor: pointer;
 }
 
 .button.active{
@@ -370,6 +392,7 @@
     border-radius: 5px;
     border: none;
     color: darkslategray;
+    cursor: pointer;
 }
 .important button{
     background: darkslategray;
@@ -377,6 +400,7 @@
     border-radius: 5px;
     border: none;
     color: #fff;
+    cursor: pointer;
 }
 .delete button{
     background: darkslategray;
@@ -384,13 +408,14 @@
     border-radius: 5px;
     border: none;
     color: #fff;
+    cursor: pointer;
 }
 
 .edit{
-    display: none;
+    display: block;
     width: 20%;
     height: 94vh;
-    background-color: black;
+    /* background-color: black; */
 }
 
 iframe{

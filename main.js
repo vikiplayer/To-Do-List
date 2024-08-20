@@ -17,6 +17,14 @@ let bellIcon = document.querySelector(".icon_fun .fa-bell");
 let reminderTimeInput = document.getElementById("reminder-time");
 let selectedTimeDiv = document.getElementById("selectedTime");
 let selectedTime = "";
+const icon = document.querySelector(".btn");
+
+function expand(){
+    let menu= document.querySelector(".nav");
+    menu.classList.toggle("active");
+}
+
+icon.addEventListener('click', expand);
 
 // When input is focused, change icons
 newTask.addEventListener("focus", function() {
@@ -61,18 +69,23 @@ function displayTasks() {
                         <i class="fa-regular fa-circle unchecked" style="display: ${task.checked ? 'none' : 'block'};"></i>
                     </button>
                 </div>
-                <div class="task-name" style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
-                    ${task.name} <br>
+                <div class="task-name">
                     <ul class="taskList">
-                        <li>
+                        <li style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
+                            <h4 class="date">${task.name}</h4>
+                        </li>
+                        ${task.date ? `
+                        <li style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
                             <p class="date">${task.date}</p>
-                        </li>
-                        <li>
+                        </li>` : ''}
+                        ${task.date && task.time ? `
+                        <li style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
                             ${separator}
-                        </li>
-                        <li>
+                        </li>` : ''}
+                        ${task.time ? `
+                        <li style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
                             <p class="time">${task.time}</p>
-                        </li>
+                        </li>` : ''}
                     </ul>
                 </div>
                 <div class="important">
@@ -91,18 +104,18 @@ function displayTasks() {
     });
 
     count = tasks.length;
-    box.style.display = count != 0 ? "block" : "none";
+    box.style.display = count !== 0 ? "block" : "none";
 }
 
 // Save tasks to local storage
 function saveTasksToLocalStorage() {
     let tasks = [];
     document.querySelectorAll(".taskss").forEach(taskElement => {
-        let taskName = taskElement.querySelector(".task-name").childNodes[0].textContent.trim();
+        let taskName = taskElement.querySelector(".task-name h4.date").textContent.trim();
         let checked = taskElement.querySelector(".checked").style.display === "block";
         let important = taskElement.querySelector(".iimportant").style.display === "block";
-        let taskDate = taskElement.querySelector(".date").textContent.trim();
-        let taskTime = taskElement.querySelector(".time").textContent.trim();
+        let taskDate = taskElement.querySelector(".task-name p.date")?.textContent.trim() || "";
+        let taskTime = taskElement.querySelector(".task-name p.time")?.textContent.trim() || "";
         tasks.push({ name: taskName, checked: checked, important: important, date: taskDate, time: taskTime });
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -216,90 +229,72 @@ nxt.addEventListener("click",() =>{
     runCal();
 });
 
-function showDate(){
-    selected.innerHTML = `
-        <p>${selectedDate}</p>
-    `;
+function showDate() {
+    selected.innerHTML = `<p>${selectedDate}</p>`;
+    selected.style.display = "block";
 }
 
+// Reminder icon and time picker
 bellIcon.addEventListener("click", function() {
-    // Toggle the visibility of the time input field
-    if (reminderTimeInput.style.display === "none" || reminderTimeInput.style.display === "") {
-        reminderTimeInput.style.display = "block"; // Show the time input field
-        reminderTimeInput.focus(); // Focus on the input field for typing the time
-    } else {
-        reminderTimeInput.style.display = "none"; // Hide the time input field if it's already visible
-    }
+    reminderTimeInput.style.display = reminderTimeInput.style.display === "block" ? "none" : "block";
 });
 
-// Event listener for when the time is selected
 reminderTimeInput.addEventListener("change", function() {
-    selectedTime = reminderTimeInput.value.replace("T", " ");
-    console.log("Reminder time set to: " + selectedTime);
-    
-    // Display the selected time in the selectedTime div
-    selectedTimeDiv.innerHTML = `
-        <p>${selectedTime}</p>
-    `;
-    
-    // Hide the input field after selecting the time (if desired)
-    reminderTimeInput.style.display = "none";
+    selectedTime = this.value;
+    selectedTimeDiv.innerHTML = `<p>${selectedTime.replace("T", " ")}</p>`;
+    selectedTimeDiv.style.display = "block";
 });
 
-// Add task to the task list
 function addTask() {
-    if (newTask.value.length == 0) {
-        alert("Please Enter a Task");
-    } else {
-        box.style.display = "block";
-
-        let separator = (selectedDate && selectedTime) ? "<li>|</li>" : "";
-
-        box.innerHTML += `
-            <div class="taskss">    
-                <div class="check-box">
-                    <button class="check-box-btn">
-                        <i class="fa-solid fa-check checked" style="display: none;"></i>
-                        <i class="fa-regular fa-circle unchecked"></i>
-                    </button>
-                </div>
-                <div class="task-name">
-                    ${newTask.value} <br>
-                    <ul class="taskList">
-                        <li>
-                            <p class="date">${selectedDate}</p>
-                        </li>
-                        <li>
-                            ${separator}
-                        </li>
-                        <li>
-                            <p class="time">${selectedTime}</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="important">
-                    <button class="important-btn">
-                        <i class="fa-solid fa-star iimportant" style="display: none;"></i>
-                        <i class="fa-regular fa-star not-important"></i>
-                    </button>
-                </div>
-                <div class="delete">
-                    <button class="delete-btn">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            </div>  
-        `;
-        count++;
-        box.style.display = count != 0 ? "block" : "none";
-        newTask.value = "";
-        selectedDate = ""; // Clear selected date
-        selectedTime = ""; // Clear selected time
-        selected.innerHTML = ""; // Clear displayed date
-        selectedTimeDiv.innerHTML = ""; // Clear displayed time
-        btn.style.display = "none";
-        saveTasksToLocalStorage();
+    let inputValue = newTask.value.trim();
+    
+    if (inputValue === "") {
+        return;
     }
+
+    box.style.display = "block";
+
+    let separator = (selectedDate && selectedTime) ? "<li>|</li>" : "";
+
+    box.innerHTML += `
+        <div class="taskss">    
+            <div class="check-box">
+                <button class="check-box-btn">
+                    <i class="fa-solid fa-check checked" style="display:none;"></i>
+                    <i class="fa-regular fa-circle unchecked"></i>
+                </button>
+            </div>
+            <div class="task-name">
+                <ul class="taskList">
+                    <li><h4 class="date">${inputValue}</h4></li>
+                    ${selectedDate ? `<li><p class="date">${selectedDate}</p></li>` : ''}
+                    ${selectedDate && selectedTime ? `<li>${separator}</li>` : ''}
+                    ${selectedTime ? `<li><p class="time">${selectedTime}</p></li>` : ''}
+                </ul>
+            </div>
+            <div class="important">
+                <button class="important-btn">
+                    <i class="fa-solid fa-star iimportant" style="display:none;"></i>
+                    <i class="fa-regular fa-star not-important"></i>
+                </button>
+            </div>
+            <div class="delete">
+                <button class="delete-btn">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>  
+    `;
+
+    count++;
+    box.style.display = count !== 0 ? "block" : "none";
+    newTask.value = "";
+    selectedDate = ""; // Clear selected date
+    selectedTime = ""; // Clear selected time
+    selected.innerHTML = ""; // Clear displayed date
+    selectedTimeDiv.innerHTML = ""; // Clear displayed time
+    btn.style.display = "none";
+    saveTasksToLocalStorage();
 }
 
 // Handle task checkbox toggle
@@ -308,8 +303,8 @@ box.addEventListener("click", function(event) {
         let taskElement = event.target.closest(".taskss");
         let checkedIcon = taskElement.querySelector(".checked");
         let uncheckedIcon = taskElement.querySelector(".unchecked");
-        let taskNameElement = taskElement.querySelector(".task-name");
-        
+        let taskNameElement = taskElement.querySelector(".task-name .taskList li");
+
         if (checkedIcon.style.display === "block") {
             checkedIcon.style.display = "none";
             uncheckedIcon.style.display = "block";
@@ -322,6 +317,7 @@ box.addEventListener("click", function(event) {
         saveTasksToLocalStorage();
     }
 });
+
 
 // Handle task importance toggle
 box.addEventListener("click", function(event) {
