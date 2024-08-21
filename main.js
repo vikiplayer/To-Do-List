@@ -243,6 +243,7 @@ reminderTimeInput.addEventListener("change", function() {
     selectedTime = this.value;
     selectedTimeDiv.innerHTML = `<p>${selectedTime.replace("T", " ")}</p>`;
     selectedTimeDiv.style.display = "block";
+    reminderTimeInput.style.display = 'none'; 
 });
 
 function addTask() {
@@ -347,3 +348,37 @@ box.addEventListener("click", function(event) {
         saveTasksToLocalStorage();
     }
 });
+
+// edit
+
+// Listen for clicks on task elements to open the edit bar
+box.addEventListener("click", function(event) {
+    // Check if the click happened inside a task element but not on buttons
+    if (event.target.closest(".taskss") && !event.target.closest(".check-box-btn, .important-btn, .delete-btn")) {
+        let taskElement = event.target.closest(".taskss");
+        openEditBar(taskElement);
+        console.log("5");
+    }
+});
+function openEditBar(taskElement) {
+    // Set the current task element being edited
+    currentEditTask = taskElement;
+
+    // Extract values from the task element
+    let taskName = taskElement.querySelector('.task-name h4').textContent.trim();
+    let taskDate = taskElement.querySelector('.date') ? taskElement.querySelector('.date').textContent.trim() : "";
+    let taskTime = taskElement.querySelector('.time') ? taskElement.querySelector('.time').textContent.trim() : "";
+
+    // Log the extracted values
+    console.log("Task Name:", taskName);
+    console.log("Task Date:", taskDate);
+    console.log("Task Time:", taskTime);
+
+    // Populate the edit bar fields with the extracted values
+    editTaskName.value = taskName;
+    editTaskDate.value = taskDate ? new Date(taskDate.split('-').reverse().join('-')).toISOString().substring(0, 10) : "";
+    editTaskTime.value = taskTime ? taskTime : "";
+
+    // Display the edit bar
+    editBar.style.display = "block";
+}

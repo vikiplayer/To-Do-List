@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <title>Dupe</title>
+    <title>ToDOList</title>
 </head>
 <body>
     <header class="header">
@@ -169,23 +169,35 @@
                 </div>
             </section>
         </div>
-        <div class="edit">
+        <div class="edit" id="edit">
             <div>
-                <label for="input_box"><i class="fa-solid fa-list-check"></i></label>
-                <input type="text" value="task name" id="input_box">
+                <label for="input_box"><i class="fa-solid fa-list-check"></i></label><br>
+                <input type="text" value="task name" id="edit-task-name" placeholder="Edit task name">
             </div>
             <div>
-                <label for="input_box"><i class="fa-regular fa-calendar-days"></i></i></label>
-                <input type="text" value="task name" id="input_box">
+                <label for="input_box"><i class="fa-regular fa-calendar-days"></i></i></label><br>
+                <input type="date" value="" id="edit-task-date">
             </div>
             <div>
-                <label for="input_box"><i class="fa-solid fa-bell"></i></i></label>
-                <input type="text" value="task name" id="input_box">
+                <label for="input_box"><i class="fa-solid fa-bell"></i></i></label><br>
+                <input type="datetime-local" value="" id="edit-task-time">
+            </div>
+            <div class="btn_group">
+                <div>
+                    <button class="dlt_btn" id="dlt_btn">
+                        delete
+                    </button>
+                </div>
+                <div>
+                    <button class="edit_btn" id="edit_btn">
+                        edit
+                    </button>
+                </div>
             </div>
         </div>
     </section>
     
     <script src="main.js"></script>
-    <!-- <script src="check.js"></script> -->
+    <script src="check.js"></script>
 </body>
 </html>
