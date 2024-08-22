@@ -425,6 +425,14 @@
     margin: 20px 5px;
 }
 
+#edit-task-date{
+    display: none;
+}
+
+#edit-task-time{
+    display: none;
+}
+
 .edit div input{
     padding: 10px;
     width: 100%;

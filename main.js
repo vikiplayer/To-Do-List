@@ -270,7 +270,7 @@ function addTask() {
                     <li><h4 class="date">${inputValue}</h4></li>
                     ${selectedDate ? `<li><p class="date">${selectedDate}</p></li>` : ''}
                     ${selectedDate && selectedTime ? `<li>${separator}</li>` : ''}
-                    ${selectedTime ? `<li><p class="time">${selectedTime}</p></li>` : ''}
+                    ${selectedTime ? `<li><p class="time">${selectedTime.replace("T", " ")}</p></li>` : ''}
                 </ul>
             </div>
             <div class="important">
@@ -360,25 +360,49 @@ box.addEventListener("click", function(event) {
         console.log("5");
     }
 });
-function openEditBar(taskElement) {
-    // Set the current task element being edited
-    currentEditTask = taskElement;
 
-    // Extract values from the task element
-    let taskName = taskElement.querySelector('.task-name h4').textContent.trim();
-    let taskDate = taskElement.querySelector('.date') ? taskElement.querySelector('.date').textContent.trim() : "";
-    let taskTime = taskElement.querySelector('.time') ? taskElement.querySelector('.time').textContent.trim() : "";
+let editDateInput = document.getElementById("edit-task-date-main");
+let editDate = document.getElementById("edit-task-date");
+let editSelectedDate = "";
 
-    // Log the extracted values
-    console.log("Task Name:", taskName);
-    console.log("Task Date:", taskDate);
-    console.log("Task Time:", taskTime);
+// Show the date picker when the input is focused
+editDateInput.addEventListener("focus", function() {
+    editDate.style.display = "block";
+});
 
-    // Populate the edit bar fields with the extracted values
-    editTaskName.value = taskName;
-    editTaskDate.value = taskDate ? new Date(taskDate.split('-').reverse().join('-')).toISOString().substring(0, 10) : "";
-    editTaskTime.value = taskTime ? taskTime : "";
+// Update the input value when the date input loses focus
+editDate.addEventListener("blur", function() {  // Corrected 'bulr' to 'blur'
+    let editedStr = String(editDate.value);  // Convert the date to string
+    let edited = editedStr.split("-").reverse().join("-");  // Reverse the date format (from YYYY-MM-DD to DD-MM-YYYY)
+    editSelectedDate = edited;
+    editDateInput.value = editSelectedDate;  // Set the reversed date as the input value
+    console.log(editDateInput.value);
 
-    // Display the edit bar
-    editBar.style.display = "block";
-}
+    // Optionally, hide the date picker after selection
+    editDate.style.display = "none";
+});
+
+let editTimeInput = document.getElementById("edit-task-time-main");
+let editTime = document.getElementById("edit-task-time");
+
+
+// Show the date picker when the input is focused
+editTimeInput.addEventListener("focus", function() {
+    editTime.style.display = "block";
+});
+
+// Update the input value when the date input loses focus
+editTime.addEventListener("blur", function() {  // Corrected 'bulr' to 'blur'
+    let edited = String(editTime.value.replace("T", " ")).split(" ");
+    edited[0] = edited[0].split("-").reverse().join("-");
+    edited = edited.join(" ")
+    let editSelectedTime = "";
+    editSelectedTime = edited;
+    editTimeInput.value = editSelectedTime;  // Set the reversed date as the input value
+    console.log(editTimeInput.value);
+
+    // Optionally, hide the date picker after selection
+    editTime.style.display = "none";
+});
+
+
