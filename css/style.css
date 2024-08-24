@@ -84,7 +84,7 @@
 }
 
 .nav{
-    /* display: none; */
+    display: none;
     width: 14%;
     height: 92vh;
     padding: 0px 0px 0px 18px;
@@ -413,7 +413,7 @@
 }
 
 .edit{
-    /* display: none; */
+    display: none;
     width: 20%;
     height: 94vh;
     border-left: 1px solid black;
