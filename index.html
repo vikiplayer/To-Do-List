@@ -158,14 +158,27 @@
                         <div class="icon_fun">
                             <i class="fa-solid fa-repeat"></i>
                         </div>
+                        <div>
+                            <select id="task-category">
+                                <option value="Work">Work</option>
+                                <option value="Personal">Personal</option>
+                                <option value="Study">Study</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div id="catInput">
+                            <input type="text" id="cInput" placeholder="enter category name">
+                            <button id="catBtn"><i class="fa-solid fa-check"></i></button>
+                        </div>
+                        <div id="selectedCategory">
+                        </div>
                     </div>
                     <div class="task_btn">
                         <button class="button" id="push">Add</button>
                     </div>
                 </div>
                 <input type="datetime-local" id="reminder-time">
-                <div id="task-sec" class="task-sec">   
-                    
+                <div id="task-sec" class="task-sec">                    
                 </div>
             </section>
         </div>
@@ -200,5 +213,6 @@
     </section>
     
     <script src="main.js"></script>
+    <!-- <script src="check.js"></script> -->
 </body>
 </html>

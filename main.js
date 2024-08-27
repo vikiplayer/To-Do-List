@@ -3,6 +3,11 @@ window.onload = () => {
     count = Object.keys(localStorage).length;
     displayTasks();
 };
+
+
+
+
+
 // Global Variables
 let newTask = document.getElementById("add");
 let addBtn = document.getElementById("add_btn");
@@ -24,11 +29,26 @@ let editTime = document.getElementById("edit-task-time");
 let editInput = document.getElementById("edit-task-name");
 let editSelectedDate = "";
 let editButton = document.getElementById("edit_btn");
+let taskCategory = document.getElementById("task-category");
+let category = document.getElementById("catInput");
+let catInput = document.getElementById("cInput");
+let CatBtn = document.getElementById("catBtn");
+let selectedCategory = document.getElementById("selectedCategory");
+
+
+
+
+
 function expand(){
     let menu= document.querySelector(".nav");
     menu.classList.toggle("active");
 }
 icon.addEventListener('click', expand);
+
+
+
+
+
 // When input is focused, change icons
 newTask.addEventListener("focus", function() {
     addBtn.style.display = "block";
@@ -38,6 +58,39 @@ newTask.addEventListener("blur", function() {
     addBtn.style.display = "none";
     radioBtn.style.display = "block";
 });
+
+
+
+
+
+function AddCat() {
+    let selectedCat = taskCategory.value;
+    if (selectedCat === "Other") {
+        category.style.display = "flex";
+
+        CatBtn.addEventListener("click", function() {
+            category.style.display = "none";
+            selectedCat = catInput.value;
+            selectedCategory.innerText = " : "+ selectedCat;
+        });
+    } else {
+        category.style.display = "none";
+        selectedCategory.innerText = "";
+    }   
+    
+    // return selectedCat;
+    
+    console.log(selectedCat)
+}
+// Run the AddCat function when category changes
+taskCategory.addEventListener('change', AddCat);
+// Example: Log the returned category
+console.log(AddCat());
+
+
+
+
+
 // Show button when there is input
 newTask.addEventListener('input', function() {
     let input = this.value;
@@ -49,10 +102,20 @@ newTask.addEventListener('input', function() {
         btn.style.display = "none";
     }
 });
+
+
+
+
+
 // Hide task box if no tasks are present
 if (count == 0) {
     box.style.display = "none";
 }
+
+
+
+
+
 // Load tasks from local storage and display them
 function displayTasks() {
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -85,6 +148,9 @@ function displayTasks() {
                         <li style="text-decoration: ${task.checked ? 'line-through' : 'none'};">
                             <p class="time">${task.time}</p>
                         </li>` : ''}
+                        <li>
+                            <h4 class="date">${task.category}</h4>
+                        </li>
                     </ul>
                 </div>
                 <div class="important">
@@ -114,10 +180,21 @@ function saveTasksToLocalStorage() {
         let taskTime = taskElement.querySelector(".task-name p.time")?.textContent.trim() || "";
         let checked = taskElement.querySelector(".checked").style.display === "block";
         let important = taskElement.querySelector(".iimportant").style.display === "block";
-        tasks.push({ name: taskName, date: taskDate, time: taskTime, checked: checked, important: important});
+        let category = taskElement.querySelector(".task-name .category")?.textContent.trim() || "";
+        tasks.push({ name: taskName, date: taskDate, time: taskTime, category: category, checked: checked, important: important});
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
+
+
+
+
+
+
+
+
+
 // Calendar functionality
 const calendarIcon = document.querySelector('.calendar-icon i');
 const calendarSection = document.querySelector('.section');
@@ -232,6 +309,16 @@ reminderTimeInput.addEventListener("change", function() {
     selectedTimeDiv.style.display = "block";
     reminderTimeInput.style.display = 'none'; 
 });
+
+
+
+
+
+
+
+
+
+
 // Function to add a task
 function addTask() {
     let inputValue = newTask.value.trim();
@@ -255,6 +342,7 @@ function addTask() {
                     ${selectedDate ? `<li><p class="date">${selectedDate}</p></li>` : ''}
                     ${(selectedDate && selectedTime) ? `<li>|</li>` : ''}
                     ${selectedTime ? `<li><p class="time">${selectedTime}</p></li>` : ''}
+                    <li><p class="category">${selectedCategory}</p></li>
                 </ul>
             </div>
             <div class="important">
@@ -281,11 +369,18 @@ function addTask() {
     selectedTime = "";
     selected.innerHTML = "";
     selectedTimeDiv.innerHTML = "";
+    selectedCategory = "";
     btn.style.display = "none";
 
     // Save tasks to local storage
     saveTasksToLocalStorage();
+    location.reload()
 }
+
+
+
+
+
 // Handle task checkbox toggle
 box.addEventListener("click", function(event) {
     if (event.target.closest(".check-box-btn")) {
@@ -323,6 +418,12 @@ box.addEventListener("click", function(event) {
         saveTasksToLocalStorage();
     }
 });
+
+
+
+
+
+
 // Handle task deletion
 box.addEventListener("click", function(event) {
     if (event.target.closest(".delete-btn")) {
@@ -356,6 +457,11 @@ function openEditBar(taskElement) {
     editTimeInput.value = taskTime;
     editInput.value = taskName;
 }
+
+
+
+
+
 box.addEventListener("click", function(event) {
     // Check if the click happened inside a task element but not on buttons
     let taskElement = event.target.closest(".taskss");
@@ -363,10 +469,20 @@ box.addEventListener("click", function(event) {
         openEditBar(taskElement);  // Pass the task element to openEditBar
     }
 });
+
+
+
+
+
 // Show the date picker when the input is focused
 editDateInput.addEventListener("focus", function() {
     editDate.style.display = "block";
 });
+
+
+
+
+
 // Update the input value when the date input loses focus
 editDate.addEventListener("blur", function() {
     let editedStr = String(editDate.value);  // Convert the date to string
@@ -374,15 +490,30 @@ editDate.addEventListener("blur", function() {
     editDateInput.value = edited;  // Set the reversed date as the input value
     editDate.style.display = "none";  // Hide the date picker after selection
 });
+
+
+
+
+
 // Show the time picker when the input is focused
 editTimeInput.addEventListener("focus", function() {
     editTime.style.display = "block";
 });
+
+
+
+
+
 editTime.addEventListener("blur", function() {
     let edited = editTime.value.replace("T", " ").split(" ").map((e, i) => i === 0 ? e.split("-").reverse().join("-") : e).join(" ");
     editTimeInput.value = edited;  // Set the edited time as the input value
     editTime.style.display = "none";  // Hide the time picker after selection
 });
+
+
+
+
+
 function updateTask() {
     // Get the task list from local storage
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -409,10 +540,20 @@ function updateTask() {
         console.error("Invalid task index:", taskIndex);
     }
 }
+
+
+
+
+
 // Corrected the event listener to pass the function reference
 editButton.addEventListener('click', updateTask);
 function close() {
     editBar.style.display = "none";
 }
+
+
+
+
+
 let exitBtn = document.getElementById("ext_btn")
 exitBtn.addEventListener('click', close);

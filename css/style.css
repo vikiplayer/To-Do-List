@@ -83,6 +83,38 @@
     font-size: small;
 }
 
+#task-category{
+    border: none;
+    padding: 5px;
+    font-size: large;
+    cursor: pointer;
+    outline: none;
+}
+
+#catInput{
+    display: none;
+    margin: 0px 15px;
+}
+#catInput input{
+    border-bottom: darkslategray 1px solid;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+#catInput input:focus{
+    outline: none;
+}
+
+#catInput #catBtn{
+    padding: 5px;
+    background: darkslategray;
+    border-radius: 5px;
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+}
+
 .nav{
     display: none;
     width: 14%;
