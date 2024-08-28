@@ -34,6 +34,7 @@ let category = document.getElementById("catInput");
 let catInput = document.getElementById("cInput");
 let CatBtn = document.getElementById("catBtn");
 let selectedCategory = document.getElementById("selectedCategory");
+let selectedCat = "";
 
 
 
@@ -64,7 +65,7 @@ newTask.addEventListener("blur", function() {
 
 
 function AddCat() {
-    let selectedCat = taskCategory.value;
+    selectedCat = taskCategory.value;
     if (selectedCat === "Other") {
         category.style.display = "flex";
 
@@ -178,9 +179,9 @@ function saveTasksToLocalStorage() {
         let taskName = taskElement.querySelector(".task-name h4.date").textContent.trim();
         let taskDate = taskElement.querySelector(".task-name p.date")?.textContent.trim() || "";
         let taskTime = taskElement.querySelector(".task-name p.time")?.textContent.trim() || "";
+        let category = taskElement.querySelector(".task-name p.category")?.textContent.trim() || "";
         let checked = taskElement.querySelector(".checked").style.display === "block";
         let important = taskElement.querySelector(".iimportant").style.display === "block";
-        let category = taskElement.querySelector(".task-name .category")?.textContent.trim() || "";
         tasks.push({ name: taskName, date: taskDate, time: taskTime, category: category, checked: checked, important: important});
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -342,7 +343,7 @@ function addTask() {
                     ${selectedDate ? `<li><p class="date">${selectedDate}</p></li>` : ''}
                     ${(selectedDate && selectedTime) ? `<li>|</li>` : ''}
                     ${selectedTime ? `<li><p class="time">${selectedTime}</p></li>` : ''}
-                    <li><p class="category">${selectedCategory}</p></li>
+                    <li><p class="category">${selectedCat}</p></li>
                 </ul>
             </div>
             <div class="important">
