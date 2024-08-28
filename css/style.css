@@ -230,6 +230,14 @@
     position: relative;
 }
 
+.category{
+    padding: 5px;
+    background: red;
+    color: aliceblue;
+    border-radius: 5px;
+    /* display: none; */
+}
+
 .icon_fun{
     margin: 0 20px;
     cursor: pointer;
@@ -273,6 +281,17 @@
 .task_btn{
     margin-right: 10px;
     cursor: pointer;
+}
+
+#task-category{
+    background-color: darkslategray;
+    color: aliceblue;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    width: 11%;
+    margin-left: 4%;
+    display: none;
 }
 
 /* calender */

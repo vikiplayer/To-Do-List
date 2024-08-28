@@ -18,6 +18,7 @@ let count = 0;
 let selectedDate = "";
 let selected = document.getElementById("selected");
 let bellIcon = document.querySelector(".icon_fun .fa-bell");
+let categoryIcon = document.querySelector(".icon_fun .fa-folder");
 let reminderTimeInput = document.getElementById("reminder-time");
 let selectedTimeDiv = document.getElementById("selectedTime");
 let selectedTime = "";
@@ -36,6 +37,14 @@ let CatBtn = document.getElementById("catBtn");
 let selectedCategory = document.getElementById("selectedCategory");
 let selectedCat = "";
 
+categoryIcon.addEventListener('click', function() {
+    // Toggle the display of taskCategory when categoryIcon is clicked
+    if (taskCategory.style.display === "none") {
+        taskCategory.style.display = "block";
+    } else {
+        taskCategory.style.display = "none";
+    }    
+});
 
 
 
@@ -60,33 +69,36 @@ newTask.addEventListener("blur", function() {
     radioBtn.style.display = "block";
 });
 
-
-
-
-
+// Function to handle category selection
 function AddCat() {
     selectedCat = taskCategory.value;
-    if (selectedCat === "Other") {
-        category.style.display = "flex";
 
-        CatBtn.addEventListener("click", function() {
-            category.style.display = "none";
-            selectedCat = catInput.value;
-            selectedCategory.innerText = " : "+ selectedCat;
-        });
+    if (selectedCat === "Other") {
+        // Show the custom category input if "Other" is selected
+        category.style.display = "flex";
     } else {
+        // Hide the custom category input for predefined categories
         category.style.display = "none";
-        selectedCategory.innerText = "";
-    }   
-    
-    // return selectedCat;
-    
-    console.log(selectedCat)
+        selectedCategory.innerText = " : " + selectedCat;
+    }
+    taskCategory.style.display = "none";
 }
-// Run the AddCat function when category changes
+
+// Run the AddCat function when the category selection changes
 taskCategory.addEventListener('change', AddCat);
-// Example: Log the returned category
-console.log(AddCat());
+
+// Handle the custom category button click
+CatBtn.addEventListener("click", function() {
+    category.style.display = "none";
+    selectedCat = catInput.value.trim(); // Trim any extra spaces
+    if (selectedCat) {
+        selectedCategory.innerText = " : " + selectedCat;
+        // console.log(selectedCat.length);
+    } else {
+        selectedCategory.innerText = ""; // Clear if input is empty
+    }
+    console.log(selectedCat.length);
+});
 
 
 
@@ -125,7 +137,7 @@ function displayTasks() {
     tasks.forEach(task => {
         let separator = (task.date && task.time) ? "<li>|</li>" : "";
         box.innerHTML += `
-            <div class="taskss">    
+            <div class="taskss" data-category="${task.category}"  data-index="${task.index}">    
                 <div class="check-box">
                     <button class="check-box-btn">
                         <i class="fa-solid fa-check checked" style="display: ${task.checked ? 'block' : 'none'};"></i>
@@ -150,7 +162,7 @@ function displayTasks() {
                             <p class="time">${task.time}</p>
                         </li>` : ''}
                         <li>
-                            <h4 class="date">${task.category}</h4>
+                            <p class="category">${task.category}</p>
                         </li>
                     </ul>
                 </div>
@@ -172,20 +184,39 @@ function displayTasks() {
     count = tasks.length;
     box.style.display = count !== 0 ? "block" : "none";
 }
+
 // Save tasks to local storage
 function saveTasksToLocalStorage() {
     let tasks = [];
     document.querySelectorAll(".taskss").forEach(taskElement => {
+        let indexx =  taskElement.getAttribute("data-index").textContent;
         let taskName = taskElement.querySelector(".task-name h4.date").textContent.trim();
         let taskDate = taskElement.querySelector(".task-name p.date")?.textContent.trim() || "";
         let taskTime = taskElement.querySelector(".task-name p.time")?.textContent.trim() || "";
         let category = taskElement.querySelector(".task-name p.category")?.textContent.trim() || "";
         let checked = taskElement.querySelector(".checked").style.display === "block";
         let important = taskElement.querySelector(".iimportant").style.display === "block";
-        tasks.push({ name: taskName, date: taskDate, time: taskTime, category: category, checked: checked, important: important});
+        tasks.push({index: indexx, name: taskName, date: taskDate, time: taskTime, category: category, checked: checked, important: important });
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
+function filterTasksByCategory(selectedCategory) {
+    const taskk = document.querySelectorAll('.taskss');
+    taskk.forEach(task => {
+        if (selectedCategory === 'all' || task.getAttribute('data-category') === selectedCategory) {
+            task.style.display = 'block';
+        } else {
+            task.style.display = 'none';
+        }
+    });
+}
+
+
+
+
+
+filterTasksByCategory('work');
 
 
 
@@ -323,6 +354,7 @@ reminderTimeInput.addEventListener("change", function() {
 // Function to add a task
 function addTask() {
     let inputValue = newTask.value.trim();
+    let index = 0;
     
     if (!inputValue) return; // Exit if input is empty
 
@@ -330,7 +362,7 @@ function addTask() {
 
     // Create the HTML structure for the task
     box.innerHTML += `
-        <div class="taskss">    
+        <div class="taskss" data-category="${selectedCat}"  data-index="${index}">    
             <div class="check-box">
                 <button class="check-box-btn">
                     <i class="fa-solid fa-check checked" style="display:none;"></i>
@@ -360,6 +392,9 @@ function addTask() {
         </div>  
     `;
 
+    // Save tasks to local storage
+    saveTasksToLocalStorage();
+
     // Update task count and visibility of the task box
     count++;
     box.style.display = count !== 0 ? "block" : "none";
@@ -370,12 +405,12 @@ function addTask() {
     selectedTime = "";
     selected.innerHTML = "";
     selectedTimeDiv.innerHTML = "";
-    selectedCategory = "";
+    // selectedCat = "";
     btn.style.display = "none";
+    index += 1;
 
-    // Save tasks to local storage
-    saveTasksToLocalStorage();
-    location.reload()
+    // Reload the page to reflect the new task addition
+    location.reload();
 }
 
 
@@ -419,6 +454,15 @@ box.addEventListener("click", function(event) {
         saveTasksToLocalStorage();
     }
 });
+
+// let categoryName = document.querySelector(".category");
+// if (selectedCat.style.display === "block") {
+//     importantIcon.style.display = "none";
+//     notImportantIcon.style.display = "block";
+// } else {
+//     importantIcon.style.display = "block";
+//     notImportantIcon.style.display = "none";
+// }
 
 
 
