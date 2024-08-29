@@ -36,6 +36,8 @@ let catInput = document.getElementById("cInput");
 let CatBtn = document.getElementById("catBtn");
 let selectedCategory = document.getElementById("selectedCategory");
 let selectedCat = "";
+let index = count; // Use the current count of tasks as the index
+
 
 categoryIcon.addEventListener('click', function() {
     // Toggle the display of taskCategory when categoryIcon is clicked
@@ -133,7 +135,8 @@ if (count == 0) {
 function displayTasks() {
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     box.innerHTML = ''; // Clear previous tasks
-
+    count = tasks.length;
+    
     tasks.forEach(task => {
         let separator = (task.date && task.time) ? "<li>|</li>" : "";
         box.innerHTML += `
@@ -181,7 +184,7 @@ function displayTasks() {
         `;
     });
 
-    count = tasks.length;
+     count++;
     box.style.display = count !== 0 ? "block" : "none";
 }
 
@@ -200,29 +203,6 @@ function saveTasksToLocalStorage() {
     });
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-
-function filterTasksByCategory(selectedCategory) {
-    const taskk = document.querySelectorAll('.taskss');
-    taskk.forEach(task => {
-        if (selectedCategory === 'all' || task.getAttribute('data-category') === selectedCategory) {
-            task.style.display = 'block';
-        } else {
-            task.style.display = 'none';
-        }
-    });
-}
-
-
-
-
-
-filterTasksByCategory('work');
-
-
-
-
-
-
 
 
 
@@ -417,6 +397,8 @@ function addTask() {
 
 
 
+
+
 // Handle task checkbox toggle
 box.addEventListener("click", function(event) {
     if (event.target.closest(".check-box-btn")) {
@@ -466,19 +448,38 @@ box.addEventListener("click", function(event) {
 
 
 
-
+function filterTasksByCategory(selectedCategory, showImportant) {
+    const tasks = document.querySelectorAll('.taskss');
+  
+    tasks.forEach(task => {
+      const taskCategory = task.getAttribute('data-category');
+      const isImportant = task.querySelector('.iimportant').style.display === 'block';
+  
+      if (
+        (selectedCategory === 'all' || taskCategory === selectedCategory) &&
+        (showImportant === undefined || showImportant === isImportant)
+      ) {
+        task.style.display = 'flex';
+      } else {
+        task.style.display = 'none';
+      }
+    });
+  }
 
 
 // Handle task deletion
 box.addEventListener("click", function(event) {
     if (event.target.closest(".delete-btn")) {
         let taskElement = event.target.closest(".taskss");
-        taskElement.remove();
-        count--;
-        box.style.display = count != 0 ? "block" : "none";
-        saveTasksToLocalStorage();
+        if (confirm("Are you sure you want to delete this task?")) {
+            taskElement.remove();
+            count--;
+            box.style.display = count !== 0 ? "block" : "none";
+            saveTasksToLocalStorage();
+        }
     }
 });
+
 // edit
 // Listen for clicks on task elements to open the edit bar
 let taskName = "";
