@@ -419,6 +419,7 @@ box.addEventListener("click", function(event) {
         saveTasksToLocalStorage();
     }
 });
+
 // Handle task importance toggle
 box.addEventListener("click", function(event) {
     if (event.target.closest(".important-btn")) {
@@ -437,34 +438,44 @@ box.addEventListener("click", function(event) {
     }
 });
 
-// let categoryName = document.querySelector(".category");
-// if (selectedCat.style.display === "block") {
-//     importantIcon.style.display = "none";
-//     notImportantIcon.style.display = "block";
-// } else {
-//     importantIcon.style.display = "block";
-//     notImportantIcon.style.display = "none";
-// }
 
 
 
-function filterTasksByCategory(selectedCategory, showImportant) {
+
+
+function filterTasksByCategory(selectedCategory) {
     const tasks = document.querySelectorAll('.taskss');
   
     tasks.forEach(task => {
-      const taskCategory = task.getAttribute('data-category');
-      const isImportant = task.querySelector('.iimportant').style.display === 'block';
-  
-      if (
-        (selectedCategory === 'all' || taskCategory === selectedCategory) &&
-        (showImportant === undefined || showImportant === isImportant)
-      ) {
-        task.style.display = 'flex';
-      } else {
-        task.style.display = 'none';
-      }
+        const taskCategory = task.getAttribute('data-category');    
+        const importantIcon = task.querySelector('.iimportant');
+
+        if (selectedCategory === 'all' || taskCategory === selectedCategory) {
+            task.style.display = 'flex';
+        } else if (selectedCategory === 'Other') {
+            if (taskCategory !== 'Work' && taskCategory !== 'Personal' && taskCategory !== 'Study') {
+                task.style.display = 'flex';
+            } else {
+                task.style.display = 'none';
+            }
+        } else if (selectedCategory === 'Important') {
+            
+            if (importantIcon && importantIcon.style.display === "block") {
+                task.style.display = 'flex';
+                console.log("hello");
+            } else {
+                task.style.display = 'none';
+                console.log("hello");
+            }
+        } else {
+            task.style.display = 'none';
+        }
     });
-  }
+}
+
+
+
+
 
 
 // Handle task deletion

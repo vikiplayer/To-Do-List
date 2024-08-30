@@ -17,6 +17,8 @@
     position: sticky;
 }
 
+
+
 .logo-sec {
     display: flex;
     align-items: center;
@@ -514,4 +516,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     padding: 5px;
     background: darkslategray;
     color: #fff;
+}
+
+.filterTasks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filterTasks button{
+    margin: 0 5px;
+    padding: 5px 10px;
+    color: aliceblue;
+    background: darkslategray;
+    border-radius: 5px;
+    outline: none;
+    border: none;
 }
