@@ -409,7 +409,7 @@
     width: 95%;
     height: fit-content;
     margin: 1% auto 0 auto;
-    border: 2px darkslategray solid;
+    /* border: 2px darkslategray solid; */
 }
 
 .taskss{
